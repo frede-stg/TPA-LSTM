@@ -22,7 +22,7 @@ def params_setup():
     parser.add_argument('--mode', type=str, default='train')
     parser.add_argument('--model_dir', type=str, default='./models/model')
     parser.add_argument('--mts', type=int, default=1)
-    parser.add_argument('--num_epochs', type=int, default=50)
+    parser.add_argument('--num_epochs', type=int, default=5)
     parser.add_argument('--num_layers', type=int, default=3)
     parser.add_argument('--num_units', type=int, default=338)
 
