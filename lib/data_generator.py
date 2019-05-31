@@ -281,7 +281,7 @@ class MuseDataGenerator(MIDIDataGenerator):
         self.FILENAME = "MuseData"
         self.DATA_FULL_PATH = self.DATA_PATH + "/" + self.FILENAME
         self.DATASET_ID = "1a5361IfxxEY1mmTfqAviiIkq6u2OYFJ7"
-
+        self.min_value = None
         self._download_file()
         self._extract_file()
         self._parse_to_tfrecords()
@@ -295,7 +295,7 @@ class TimeSeriesDataGenerator(DataGenerator):
                                       para.data_set + str(self.h))
         create_dir(self.DATA_PATH)
         self._download_file()
-        self.split = [0, 0.6, 0.8, 1]
+        self.split = [0, 0.6, 0.7, 1]
         self.split_names = ["train", "validation", "test"]
         self._preprocess(para)
         del self.raw_dat, self.dat
@@ -303,15 +303,15 @@ class TimeSeriesDataGenerator(DataGenerator):
     def _download_file(self):
         logging.info("Downloading Time Series {} data set...".format(
             self.para.data_set))
-        url = "https://github.com/laiguokun/multivariate-time-series-data/"
-        url += "blob/master/{}/".format(self.para.data_set)
-        if self.para.data_set == "solar-energy":
-            url += "solar_AL.txt.gz?raw=true"
-        else:
-            url += "{}.txt.gz?raw=true".format(self.para.data_set)
+        # url = "https://github.com/laiguokun/multivariate-time-series-data/"
+        # url += "blob/master/{}/".format(self.para.data_set)
+        # if self.para.data_set == "solar-energy":
+        #     url += "solar_AL.txt.gz?raw=true"
+        # else:
+        #     url += "{}.txt.gz?raw=true".format(self.para.data_set)
         self.out_fn = os.path.join(self.DATA_PATH,
-                                   self.para.data_set + ".txt.gz")
-        download_file(url, self.out_fn)
+                                   self.para.data_set + ".txt")
+        # download_file(url, self.out_fn)
 
     def _preprocess(self, para):
 
@@ -327,6 +327,7 @@ class TimeSeriesDataGenerator(DataGenerator):
         self.scale = np.ones(self.INPUT_SIZE)
         for i in range(self.INPUT_SIZE):
             mn = np.min(self.raw_dat[:, i])
+            self.min_value = mn
             if para.data_set == 'electricity':
                 self.scale[i] = np.max(self.raw_dat[:, i]) - mn
             else:

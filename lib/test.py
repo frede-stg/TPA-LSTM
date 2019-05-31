@@ -2,6 +2,7 @@ import logging
 import numpy as np
 from tqdm import tqdm
 
+
 def test(para, sess, model, data_generator):
     sess.run(data_generator.iterator.initializer)
 
@@ -67,3 +68,5 @@ def test(para, sess, model, data_generator):
         logging.info('precision: %.5f' % precision)
         logging.info('recall: %.5f' % recall)
         logging.info('F1 score: %.5f' % F1)
+
+    return all_labels, all_outputs
